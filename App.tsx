@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, SafeAreaView } from 'react-native';  
-import Navegacao from './src/components/Navegacao';  // Certifique-se de que este caminho está correto
-import 'react-native-gesture-handler';  // Necessário para o Gesture Handler funcionar corretamente
+import Navegacao from './src/components/Navegacao';
+import 'react-native-gesture-handler';  
 
 export default function App() {
   return (

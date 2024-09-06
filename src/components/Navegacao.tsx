@@ -6,19 +6,23 @@ import Login from './Login';
 import Checklist from './Checklist';
 import ChecklistBustaeFiltro from "../extras/ChecklistBuscaeFiltro";
 import ChecklistsDetails from './ChecklistsDetails';
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 
 const Stack = createStackNavigator();
 
 const Navegacao = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);  // Atualizando o estado para null
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
-        setIsLoggedIn(!!token); // Se o token existir, o usuário está logado
+        if (token) {
+          setIsLoggedIn(true);  // Se o token existir, usuário está autenticado
+        } else {
+          setIsLoggedIn(false); // Se não houver token, vai para a tela de login
+        }
       } catch (error) {
         console.error("Erro ao acessar AsyncStorage:", error);
         setIsLoggedIn(false);  // Se houver erro, trata como deslogado
@@ -26,32 +30,36 @@ const Navegacao = () => {
         setLoading(false);  // Finaliza o loading
       }
     };
-  
+
     checkLoginStatus();
   }, []);
-  
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={isLoggedIn ? "ChecklistMelhoria" : "Login"}>
-        <Stack.Screen 
-          name="Login" 
-          component={Login} 
-          options={{ headerShown: false }}  
-        />
-        <Stack.Screen 
-          name="Checklist" 
-          component={Checklist}  
-        />
-        <Stack.Screen 
-          name="ChecklistMelhoria"  
-          component={ChecklistBustaeFiltro}  
-        />
-        <Stack.Screen name="ChecklistsDetails" component={ChecklistsDetails} />
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen 
+              name="ChecklistMelhoria"  
+              component={ChecklistBustaeFiltro}  
+            />
+            <Stack.Screen name="ChecklistsDetails" component={ChecklistsDetails} />
+          </>
+        ) : (
+          <Stack.Screen 
+            name="Login" 
+            component={Login} 
+            options={{ headerShown: false }}  
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

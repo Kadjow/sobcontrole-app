@@ -3,11 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, Image, Alert, KeyboardAvoiding
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomStyles from '../Styles/CustomStyles';
+import { Ionicons } from '@expo/vector-icons';
 
 const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState('tester@tester.com');
   const [password, setPassword] = useState('sob123');
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -35,42 +36,39 @@ const Login = ({ navigation }: any) => {
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <View style={CustomStyles.loginContainer}>
-          
-          {/* Logo */}
           <Image
             style={CustomStyles.sobLogo}
             source={require('../img/sobLogo.jpg')} 
           />
 
-          {/* Título de boas-vindas */}
           <Text style={CustomStyles.title}>Seja bem-vindo!</Text>
 
-          {/* Campo de Email */}
-          <TextInput
-            style={CustomStyles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-
-          {/* Campo de Senha */}
-          <View style={CustomStyles.passwordContainer}>
+          {/* Box de email */}
+          <View style={CustomStyles.inputContainer}>
             <TextInput
-              style={CustomStyles.input}  // Aplicando o mesmo estilo do campo de email
+              style={CustomStyles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+
+          {/* Box de senha com ícone */}
+          <View style={CustomStyles.inputContainer}>
+            <TextInput
+              style={[CustomStyles.input, { flex: 1 }]} 
               value={password}
               onChangeText={setPassword}
               placeholder="Senha"
-              secureTextEntry={!showPassword} 
+              secureTextEntry={!showPassword}
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              {/* Ícone de olho */}
-              <Text>{showPassword ? '🙈' : '👁️'}</Text>
+              <Ionicons name={showPassword ? "eye-off" : "eye"} size={24} color="black" />
             </TouchableOpacity>
           </View>
 
-          {/* Botão de Login */}
           <TouchableOpacity style={CustomStyles.button} onPress={handleLogin}>
             <Text style={CustomStyles.buttonText}>Entrar</Text>
           </TouchableOpacity>

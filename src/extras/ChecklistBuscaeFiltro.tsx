@@ -18,9 +18,9 @@ interface Checklist {
 }
 
 const ChecklistBustaeFiltro = ({ navigation }: any) => {
-  const [checklists, setChecklists] = useState<Checklist[]>([]);  
-  const [checklistsFiltrados, setChecklistsFiltrados] = useState<Checklist[]>([]);  
-  const [busca, setBusca] = useState<string>('');  
+  const [checklists, setChecklists] = useState<Checklist[]>([]);  // Inicializado como array vazio
+  const [checklistsFiltrados, setChecklistsFiltrados] = useState<Checklist[]>([]);  // Inicializado como array vazio
+  const [busca, setBusca] = useState<string>('');  // Estado para armazenar o valor da busca
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const ChecklistBustaeFiltro = ({ navigation }: any) => {
             Authorization: `Bearer ${tokenArmazenado}`,
           },
         });
-        setChecklists(resposta.data || []);  
-        setChecklistsFiltrados(resposta.data || []);  
+        setChecklists(resposta.data || []);  // Garante que será um array, mesmo se a resposta for indefinida
+        setChecklistsFiltrados(resposta.data || []);  // Garante que será um array, mesmo se a resposta for indefinida
       } catch (error) {
         console.error('Erro ao buscar os checklists:', error);
       } finally {
@@ -53,7 +53,7 @@ const ChecklistBustaeFiltro = ({ navigation }: any) => {
   };
 
   if (carregando) {
-    return <Text>Carregando...</Text>;  
+    return <Text>Carregando...</Text>;  // Texto dentro de <Text>
   }
 
   return (
@@ -76,7 +76,7 @@ const ChecklistBustaeFiltro = ({ navigation }: any) => {
             onPress={() => navigation.navigate('ChecklistsDetails', { checklist: item })}
           >
             <Text style={styles.textoChecklist}>{item.name}</Text>  
-            <Text style={styles.questaoChecklist}>{item.questions?.length.toString()} ?</Text>  
+            <Text style={styles.questaoChecklist}>{item.questions?.length} ?</Text>  
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}

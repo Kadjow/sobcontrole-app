@@ -36,14 +36,16 @@ const Login = ({ navigation }: any) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <View style={CustomStyles.loginContainer}>
           
-
+          {/* Logo */}
           <Image
             style={CustomStyles.sobLogo}
             source={require('../img/sobLogo.jpg')} 
           />
 
+          {/* Título de boas-vindas */}
           <Text style={CustomStyles.title}>Seja bem-vindo!</Text>
 
+          {/* Campo de Email */}
           <TextInput
             style={CustomStyles.input}
             value={email}
@@ -53,9 +55,10 @@ const Login = ({ navigation }: any) => {
             autoCapitalize="none"
           />
 
+          {/* Campo de Senha */}
           <View style={CustomStyles.passwordContainer}>
             <TextInput
-              style={{ flex: 1 }}  
+              style={CustomStyles.input}  // Aplicando o mesmo estilo do campo de email
               value={password}
               onChangeText={setPassword}
               placeholder="Senha"
@@ -67,6 +70,7 @@ const Login = ({ navigation }: any) => {
             </TouchableOpacity>
           </View>
 
+          {/* Botão de Login */}
           <TouchableOpacity style={CustomStyles.button} onPress={handleLogin}>
             <Text style={CustomStyles.buttonText}>Entrar</Text>
           </TouchableOpacity>

@@ -39,17 +39,9 @@ export default StyleSheet.create({
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 8,
-    marginBottom: 15,
-    backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: '#F07C00',  // Cor aplicada nos botões
+    backgroundColor: '#F8961E',
     paddingVertical: 10,
     paddingHorizontal: 40,
     borderRadius: 5,
@@ -59,34 +51,36 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  // Estilos para Checklist
   checklistContainer: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#f4f4f4',
   },
   checklistItem: {
     padding: 16,
     marginVertical: 8,
-    backgroundColor: '#F07C00',  // Cor aplicada nos itens de checklist
+    backgroundColor: '#F07C00',  // Atualizando para a cor solicitada
     borderRadius: 8,
     borderColor: '#ccc',
     borderWidth: 1,
   },
   checklistText: {
     fontSize: 18,
-    color: '#fff',  // Texto em branco para contraste
+    color: '#fff',  // Texto branco para contraste com o fundo laranja
   },
+  // Estilos para ChecklistDetails
   checklistDetailsContainer: {
     marginVertical: 8,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#F07C00',  // Atualizando para a cor solicitada
     borderRadius: 8,
-    borderColor: '#F07C00',  // Cor aplicada nas bordas dos detalhes do checklist
+    borderColor: '#ddd',
     borderWidth: 1,
   },
   checklistDetailsText: {
     fontSize: 16,
-    color: '#555',
+    color: '#fff',  // Texto branco para contraste com o fundo laranja
     marginBottom: 5,
   },
   container: {
@@ -95,5 +89,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     backgroundColor: '#fff',
+  },
+  // Estilo para quando não há checklists
+  emptyText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

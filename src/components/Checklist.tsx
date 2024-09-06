@@ -1,62 +1,77 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomStyles from '../Styles/CustomStyles';
 
-const Checklist = ({ route, navigation }: any) => {
-  const { token: routeToken } = route.params || {};  
-  const [checklists, setChecklists] = useState([]);
+// Definindo a interface correta para os checklists
+interface Pergunta {
+  id: string;
+  question: string;
+  has_observation: boolean;
+  right_answer: string;
+}
+
+interface Checklist {
+  id: string;
+  name: string;
+  questions: Pergunta[];
+}
+
+const Checklist = ({ navigation }: any) => {
+  const [checklists, setChecklists] = useState<Checklist[]>([]);  // Definindo o tipo correto
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState<string | null>(routeToken || null); 
 
   useEffect(() => {
-    const fetchTokenAndChecklists = async () => {
-      let storedToken = routeToken || (await AsyncStorage.getItem('token'));
-
-      if (!storedToken) {
-        Alert.alert('Erro', 'Token não encontrado. Faça o login novamente.');
-        navigation.navigate('Login');
-        return;
-      }
-
-      setToken(storedToken); 
-
+    const fetchChecklists = async () => {
       try {
-        
+        const storedToken = await AsyncStorage.getItem('token');
+        if (!storedToken) {
+          Alert.alert('Erro', 'Token não encontrado, faça o login novamente.');
+          navigation.navigate('Login');
+          return;
+        }
+
         const response = await axios.get('https://driver-api-production.up.railway.app/protected/checklist/all', {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },
         });
-        setChecklists(response.data);
+
+        setChecklists(response.data || []);  // Garante que sempre temos um array
       } catch (error) {
-        Alert.alert('Erro', 'Falha ao buscar os checklists.');
+        console.error('Erro ao buscar os checklists:', error);
+        Alert.alert('Erro', 'Falha ao carregar os checklists.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTokenAndChecklists();
-  }, [routeToken, navigation]);
+    fetchChecklists();
+  }, [navigation]);
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <View style={CustomStyles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   return (
-    <View style={CustomStyles.checklistContainer}>
+    <View style={CustomStyles.container}>
       <FlatList
         data={checklists}
-        keyExtractor={(item, index) => item.id || index.toString()}
-        renderItem={({ item }: { item: any }) => (
+        keyExtractor={(item) => item.id}  // Usamos o tipo correto
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={CustomStyles.checklistItem}
             onPress={() => navigation.navigate('ChecklistsDetails', { checklist: item })}
           >
-            <Text style={CustomStyles.checklistText}>{item.name} 📋</Text>
+            <Text style={CustomStyles.checklistText}>{item.name} 📋</Text>  
           </TouchableOpacity>
         )}
+        ListEmptyComponent={<Text style={CustomStyles.emptyText}>Nenhum checklist encontrado.</Text>}  // Exibe mensagem caso a lista esteja vazia
       />
     </View>
   );

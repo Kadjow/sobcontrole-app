@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, Alert, KeyboardAvoiding
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomStyles from '../Styles/CustomStyles';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; 
 
 const Login = ({ navigation }: any) => {
   const [email, setEmail] = useState('tester@tester.com');
@@ -43,7 +43,6 @@ const Login = ({ navigation }: any) => {
 
           <Text style={CustomStyles.title}>Seja bem-vindo!</Text>
 
-          {/* Box de email */}
           <View style={CustomStyles.inputContainer}>
             <TextInput
               style={CustomStyles.input}
@@ -55,7 +54,6 @@ const Login = ({ navigation }: any) => {
             />
           </View>
 
-          {/* Box de senha com ícone */}
           <View style={CustomStyles.inputContainer}>
             <TextInput
               style={[CustomStyles.input, { flex: 1 }]} 

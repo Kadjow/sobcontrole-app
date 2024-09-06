@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomStyles from '../Styles/CustomStyles';
@@ -18,42 +18,50 @@ interface Checklist {
 }
 
 const Checklist = ({ navigation }: any) => {
-  const [checklists, setChecklists] = useState<Checklist[]>([]);  
+  const [checklists, setChecklists] = useState<Checklist[]>([]);   
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchChecklists = async () => {
       try {
         const storedToken = await AsyncStorage.getItem('token');
-        if (storedToken) {
-          const response = await axios.get('https://driver-api-production.up.railway.app/protected/checklist/all', {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          });
-          if (response.data) {
-            setChecklists(response.data);  
-          }
+        if (!storedToken) {
+          Alert.alert('Erro', 'Token não encontrado, faça o login novamente.');
+          navigation.navigate('Login');
+          return;
         }
+
+        const response = await axios.get('https://driver-api-production.up.railway.app/protected/checklist/all', {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+
+        setChecklists(response.data || []); 
       } catch (error) {
         console.error('Erro ao buscar os checklists:', error);
+        Alert.alert('Erro', 'Falha ao carregar os checklists.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchChecklists();
-  }, []);
+  }, [navigation]);
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return (
+      <View style={CustomStyles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   return (
     <View style={CustomStyles.container}>
       <FlatList
         data={checklists}
-        keyExtractor={(item) => item.id}  
+        keyExtractor={(item) => item.id}   
         renderItem={({ item }) => (
           <TouchableOpacity
             style={CustomStyles.checklistItem}
@@ -62,7 +70,7 @@ const Checklist = ({ navigation }: any) => {
             <Text style={CustomStyles.checklistText}>{item.name} 📋</Text>  
           </TouchableOpacity>
         )}
-        ListEmptyComponent={<Text style={CustomStyles.emptyText}>Nenhum checklist encontrado.</Text>}  
+        ListEmptyComponent={<Text style={CustomStyles.emptyText}>Nenhum checklist encontrado.</Text>} 
       />
     </View>
   );

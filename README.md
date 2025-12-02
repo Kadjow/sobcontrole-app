@@ -1,104 +1,179 @@
+# 📱 SobControle App
 
-# SobControle App
+O **SobControle App** é um aplicativo mobile desenvolvido em **React Native** com **TypeScript** para gerenciamento de **checklists**.  
+Ele permite que o usuário realize **login com autenticação JWT**, consuma uma **API REST** e visualize listas de checklists e os detalhes de cada uma.
 
-O SobControle App é uma aplicação React Native que permite o gerenciamento de checklists protegidos por autenticação via API Rest. O aplicativo realiza autenticação JWT e consome uma API para listar checklists e detalhes de cada checklist.
+> Aplicativo focado em organizar atividades pessoais e profissionais por meio de checklists protegidos por autenticação.
 
-## Pré-requisitos
+---
 
-Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em seu ambiente de desenvolvimento:
+## 🎯 Objetivo do projeto
 
-- [Node.js](https://nodejs.org/en/) (v12 ou superior)
-- [Expo CLI](https://docs.expo.dev/get-started/installation/)
-- [Yarn](https://classic.yarnpkg.com/en/docs/install) ou npm
+O objetivo do SobControle App é:
 
-Além disso, o emulador Android ou iOS, ou um dispositivo físico com o aplicativo **Expo Go**.
+- Centralizar checklists em um único aplicativo;
+- Proteger o acesso via autenticação (JWT);
+- Consumir uma API REST real em ambiente de testes;
+- Servir como base de estudo para:
+  - React Native com TypeScript;
+  - Integração com API externa;
+  - Fluxo de login + navegação autenticada.
 
-## Passos para Configuração
+---
+
+## 🧱 Tecnologias utilizadas
+
+- **React Native** com **TypeScript**
+- **Expo CLI**
+- **Axios** – consumo da API REST
+- **AsyncStorage** – armazenamento do token JWT
+- **React Navigation** – navegação entre telas
+- **API REST** hospedada em produção
+
+---
+
+## ✅ Funcionalidades
+
+- **Login com autenticação JWT**  
+  Envio de e-mail e senha para a API e armazenamento do token para uso nas próximas requisições.
+
+- **Listagem de checklists**  
+  Após o login, o usuário visualiza uma lista de checklists disponíveis.
+
+- **Detalhes do checklist**  
+  Ao selecionar um checklist, são exibidas suas perguntas, respostas e demais informações.
+
+- **Proteção de rotas**  
+  Apenas usuários autenticados conseguem acessar as telas de checklist.
+
+---
+
+## 🔌 API e autenticação
+
+O app consome uma API disponível em:
+
+https://driver-api-production.up.railway.app
+
+- A autenticação é feita na rota `/auth`;
+- O token JWT retornado é armazenado no app (via AsyncStorage);
+- Esse token é utilizado nas chamadas autenticadas para listar e detalhar checklists.
+
+No código, o login utiliza credenciais padrão configuradas em `Login.tsx`, que podem ser alteradas conforme necessário:
+
+    const [email, setEmail] = useState('tester@tester.com');
+    const [password, setPassword] = useState('sob123');
+
+> Em produção, o ideal é remover credenciais padrão e utilizar inputs do usuário + validações.
+
+---
+
+## 🛠 Pré-requisitos
+
+Antes de rodar o projeto, certifique-se de ter instalado:
+
+- **Node.js** (versão recomendada LTS)
+- **Expo CLI**
+- **Yarn** ou **npm**
+- Emulador Android/iOS **ou** dispositivo físico com o app **Expo Go** instalado
+
+---
+
+## 🚀 Como rodar o projeto
 
 ### 1. Clonar o repositório
 
-Clone o repositório do projeto para a sua máquina local:
+    git clone https://github.com/Kadjow/sobcontrole-app.git
+    cd sobcontrole-app
 
-```
-git clone <URL do Repositório>
-cd <nome-do-repositório>
-```
+### 2. Instalar dependências
 
-### 2. Instalar as dependências
+Com **Yarn**:
 
-No diretório do projeto, instale as dependências com Yarn ou npm:
+    yarn install
 
-```
-yarn install
-```
+Ou com **npm**:
 
-ou
+    npm install
 
-```
-npm install
-```
+### 3. Configurar a API (opcional)
 
-### 3. Configuração da API
+Se necessário, altere a URL base da API ou as credenciais padrão no arquivo `Login.tsx`, apontando para o backend desejado.
 
-O aplicativo se comunica com a API em `https://driver-api-production.up.railway.app`. Certifique-se de que essa API está acessível ou modifique a URL da API no código, se necessário.
+### 4. Iniciar o app
 
-A autenticação é feita usando um email e senha padrão, que podem ser modificados no arquivo `Login.tsx`:
+    expo start
 
-```typescript
-const [email, setEmail] = useState('tester@tester.com');
-const [password, setPassword] = useState('sob123');
-```
+Isso abrirá o **Metro Bundler** no navegador. A partir daí você pode:
 
-### 4. Executar o aplicativo
+- Escanear o QR Code com o app **Expo Go** no celular; ou
+- Rodar o projeto em um emulador Android/iOS.
 
-Para rodar o aplicativo em modo de desenvolvimento, use o Expo CLI:
+---
 
-```
-expo start
-```
+## 📂 Estrutura do projeto
 
-Isso abrirá o **Metro Bundler**. A partir daí, você pode:
+Estrutura principal (simplificada):
 
-- Escanear o código QR no seu dispositivo móvel usando o aplicativo **Expo Go**.
-- Ou rodar o emulador Android/iOS no seu computador.
+    sobcontrole-app/
+    ├── android/                 # Configurações nativas Android (geradas pelo Expo/React Native)
+    ├── assets/                  # Imagens e outros recursos estáticos
+    ├── sobcontrole-app/         # Pasta interna gerada/configurada pelo ambiente
+    ├── src/
+    │   ├── components/
+    │   │   ├── Navegacao.jsx          # Configuração de navegação entre telas
+    │   │   ├── Login.tsx              # Tela de login + chamada à API de autenticação
+    │   │   ├── Checklist.jsx          # Tela com a listagem de checklists
+    │   │   └── ChecklistsDetails.tsx  # Tela com detalhes de um checklist específico
+    │   │
+    │   ├── Styles/
+    │   │   └── CustomStyles.ts        # Estilos compartilhados entre as telas
+    │   │
+    │   └── img/
+    │       └── sobLogo.jpg            # Logo utilizada na tela de login
+    │
+    ├── App.tsx                 # Arquivo principal do app
+    ├── app.json                # Configurações do projeto Expo
+    ├── tsconfig.json           # Configuração TypeScript
+    ├── package.json            # Dependências e scripts
+    └── README.md               # Documentação do projeto
 
-### 5. Funcionalidades do Aplicativo
+---
 
-- **Autenticação**: Realize login utilizando a rota `/auth` da API.
-- **Listagem de Checklists**: Depois de autenticado, o usuário poderá ver uma lista de checklists disponíveis.
-- **Detalhes do Checklist**: Cada checklist contém perguntas e respostas, que podem ser visualizadas ao clicar no item da lista de checklists.
+## 🎨 Estilos
 
-## Estrutura do Projeto
+Os estilos do app são centralizados em:
 
-O projeto está estruturado da seguinte forma:
+`src/Styles/CustomStyles.ts`
 
-```
-src/
-├── components/
-│   ├── Navegacao.jsx        # Componente de navegação entre telas
-│   ├── Login.tsx            # Tela de login com autenticação via API
-│   ├── Checklist.jsx        # Tela que exibe a lista de checklists
-│   └── ChecklistsDetails.tsx # Tela que exibe os detalhes de um checklist específico
-│
-├── Styles/
-│   └── CustomStyles.ts      # Estilos customizados para as telas
-│
-└── img/
-    └── sobLogo.jpg          # Imagem de logo usada na tela de login
-```
+Nesse arquivo ficam:
 
-## Recursos de Estilo
+- Estilos de inputs;
+- Botões;
+- Textos;
+- Layout das telas de login, listagem e detalhes.
 
-Os estilos para as telas estão centralizados no arquivo `CustomStyles.ts`, que organiza as definições de estilo para componentes como inputs, botões e listas.
+Essa abordagem facilita a manutenção e garante consistência visual entre as telas.
 
-## Tecnologias Utilizadas
+---
 
-- **React Native** com TypeScript
-- **Expo CLI**
-- **Axios** para requisições HTTP
-- **AsyncStorage** para armazenamento seguro de tokens JWT
-- **React Navigation** para navegação entre telas
+## 📦 Build / produção
 
-## Executando em Produção
+Para gerar builds ou versões instaláveis, consulte a documentação oficial do **Expo**:
 
-Para gerar um APK ou executar em um dispositivo real, consulte a [documentação do Expo](https://docs.expo.dev/distribution/building-standalone-apps/).
+https://docs.expo.dev
+
+A partir dela você pode:
+
+- Gerar APK/AAB para Android;
+- Gerar builds para iOS;
+- Configurar publicação nas lojas.
+
+---
+
+## 👨‍💻 Autor
+
+**Diogo Arthur Gulhak**  
+Desenvolvedor de Software, focado em **Flutter/Dart** e desenvolvimento mobile, com experiência em integração com APIs, autenticação e boas práticas de arquitetura.
+
+- GitHub: [@Kadjow](https://github.com/Kadjow)
+- LinkedIn: [Diogo Arthur Gulhak](https://www.linkedin.com/in/diogo-arthur-gulhak-0bbaa0273/)

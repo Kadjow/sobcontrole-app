@@ -50,9 +50,7 @@ O objetivo do SobControle App é:
 
 ## 🔌 API e autenticação
 
-O app consome uma API disponível em:
-
-https://driver-api-production.up.railway.app
+O app consome uma API aonde e realizado:
 
 - A autenticação é feita na rota `/auth`;
 - O token JWT retornado é armazenado no app (via AsyncStorage);
